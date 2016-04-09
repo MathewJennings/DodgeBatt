@@ -11,7 +11,7 @@ public class NetworkManagerScript : NetworkManager {
 
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
     {
-        GameObject player = (GameObject)Instantiate(playerPrefab, GetStartPosition().position, Quaternion.identity);
+        GameObject player = (GameObject)Instantiate(playerPrefab, GetStartPosition().position, GetStartPosition().rotation);
         if (numPlayers == 0)
         {
             player1 = player;
