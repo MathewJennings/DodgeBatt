@@ -10,7 +10,7 @@ public class PowerBallBehaviour : SphereBehaviour {
 	}
 
 	public override void OnCollisionEnter(Collision collision) {
-		base.OnCollisionEnter (Collision);
+		base.OnCollisionEnter (collision);
 		GameObject obj = collision.gameObject;
 		if (obj.tag == "bat") {
 			//Do Something....
