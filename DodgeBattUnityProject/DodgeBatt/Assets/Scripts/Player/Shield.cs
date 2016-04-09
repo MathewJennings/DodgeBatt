@@ -10,7 +10,7 @@ public class Shield : MonoBehaviour {
 
     Controller controller;
     GameObject centerEyeAnchor;
-    GameObject leapControllerGameObj;
+    public GameObject leapControllerGameObj;
     GameObject leftShield;
     GameObject rightShield;
 

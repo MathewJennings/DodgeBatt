@@ -7,6 +7,7 @@ public class Bat : MonoBehaviour {
     
     public GameObject batPrefab;
     public float normalScalar = 1.0f;
+    public GameObject controller_;
 
     Controller controller;
     GameObject batLeft;
@@ -58,30 +59,11 @@ public class Bat : MonoBehaviour {
 
     private void CheckAndUpdateBat(Hand hand, bool isLeft)
     {
-        Debug.Log(gameObject.transform.position);
-        Vector3 reference = hand.PalmPosition.ToVector3();
-        reference.x /= -1000;
-        reference.y /= 1000;
-        reference.z /= -1000;
-        reference.x += 0.234f;
-        reference.y += 0.04f;
-        reference.z += 0.32f;
-        reference = new Vector3(reference.x, reference.z, reference.y);
-        reference = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * reference;
-        reference = reference + gameObject.transform.position;
-        Vector3 handAngle = normalScalar * hand.PalmNormal.ToVector3();
-        handAngle.x /= 1000;
-        handAngle.y /= 1000;
-        handAngle.z /= 1000;
-        handAngle = new Vector3(handAngle.x, handAngle.z, handAngle.y);
-        handAngle = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * handAngle;
-        Vector3 swordPosition = reference + handAngle;
+        Vector3 batPosition = toVector3Scaled(hand.PalmPosition, 0.001f);
+        batPosition = controller_.transform.TransformPoint(batPosition);
 
-        Vector3 palmNormal = new Vector3(hand.PalmNormal.x, hand.PalmNormal.y, hand.PalmNormal.z);
-        //palmNormal.z *= -1;
-        Vector3 palmDirection = new Vector3(hand.Direction.x, hand.Direction.y, hand.Direction.z);
-        //palmDirection.z *= -1;
-        Vector3 batDirection = Vector3.Cross(palmNormal, palmDirection);
+        //controller_.transform.TransformDirection(local_dir);
+        Vector3 batDirection = Vector3.zero;
 
         if (isLeft)
         {
@@ -90,13 +72,13 @@ public class Bat : MonoBehaviour {
 
                 if (batLeft == null)
                 {
-                    batLeft = (GameObject)Instantiate(batPrefab, swordPosition, Quaternion.identity);
+                    batLeft = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
                     batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
                 }
                 else
                 {
                     //batLeft.GetComponent<ObjectScript>().BeginFadeIn();
-                    batLeft.GetComponent<Transform>().position = swordPosition;
+                    batLeft.GetComponent<Transform>().position = batPosition;
                     batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
                 }
             }
@@ -115,13 +97,13 @@ public class Bat : MonoBehaviour {
 
                 if (batRight == null)
                 {
-                    batRight = (GameObject)Instantiate(batPrefab, swordPosition, Quaternion.identity);
+                    batRight = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
                     batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
                 }
                 else
                 {
                     //batRight.GetComponent<ObjectScript>().BeginFadeIn();
-                    batRight.GetComponent<Transform>().position = swordPosition;
+                    batRight.GetComponent<Transform>().position = batPosition;
                     batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
                 }
             }
@@ -133,5 +115,10 @@ public class Bat : MonoBehaviour {
                 Destroy(batRight);
             }
         }
+    }
+
+    private Vector3 toVector3Scaled(Vector v, float scale)
+    {
+        return new Vector3(v.x * scale, v.y * scale, v.z * scale);
     }
 }
