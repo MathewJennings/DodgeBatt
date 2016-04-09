@@ -17,33 +17,17 @@ public class NetworkManagerScript : NetworkManager {
             player1 = player;
             Test script = player.GetComponent<Test>();
             script.setColor(Color.blue);
-            script.destroyFloatingHand();
+            //script.CmdDestroyFloatingHand();
         }
         else
         {
             player2 = player;
             Test script = player.GetComponent<Test>();
             script.setColor(orange);
-            script.destroyFloatingHand();
+            //script.CmdDestroyFloatingHand();
         }
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
 
         numPlayers++;
-    }
-
-    private void destroyFloatingHand(GameObject player)
-    {
-        Transform l = player.transform.FindChild("CenterEyeAnchor").FindChild("LeapSpace")
-                .FindChild("LeapHandController").FindChild("CapsuleHand_L");
-        foreach (Transform child in l)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
-        Transform r = player.transform.FindChild("CenterEyeAnchor").FindChild("LeapSpace")
-            .FindChild("LeapHandController").FindChild("CapsuleHand_R");
-        foreach (Transform child in r)
-        {
-            GameObject.Destroy(child.gameObject);
-        }
     }
 }

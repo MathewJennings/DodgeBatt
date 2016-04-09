@@ -9,7 +9,7 @@ public class Test : NetworkBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+        CmdDestroyFloatingHand();
 	}
 	
 	// Update is called once per frame
@@ -33,10 +33,11 @@ public class Test : NetworkBehaviour {
         myColor = c;
     }
 
-    public void destroyFloatingHand()
+    [ClientRpc]
+    public void RpcDestroyFloatingHand()
     {
         Transform l = transform.FindChild("CenterEyeAnchor").FindChild("LeapSpace")
-                .FindChild("LeapHandController").FindChild("CapsuleHand_L");
+                 .FindChild("LeapHandController").FindChild("CapsuleHand_L");
         foreach (Transform child in l)
         {
             GameObject.Destroy(child.gameObject);
@@ -47,5 +48,11 @@ public class Test : NetworkBehaviour {
         {
             GameObject.Destroy(child.gameObject);
         }
+    }
+
+    [Command]
+    public void CmdDestroyFloatingHand()
+    {
+        RpcDestroyFloatingHand();
     }
 }
