@@ -17,6 +17,8 @@ public class SphereBehaviour : MonoBehaviour {
 	//is created
 	public ParticleSystem psystem;
 
+	public float initForce;
+
 	private float delay = 0.0f;
 
 	private bool isOn;
