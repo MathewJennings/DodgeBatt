@@ -1,4 +1,0 @@
-To be used with the dodgeballs.
-
-Our object needs to have a rigidbody and
-a sphere collider.
