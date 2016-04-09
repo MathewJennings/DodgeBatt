@@ -29,8 +29,24 @@ public class SphereBehaviour : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 		// Initial force vertor can be randomized later
 		// This is just here for testing
-		Vector3 force = new Vector3 (45.0f, 60.0f, 45.0f);
-		rb.AddForce (3.0f * force);
+		int rand = Random.Range(0,2);
+		float x = 2.0f;
+		if (rand == 0) {
+			x = -2.0f;
+		}
+		rand = Random.Range(0,2);
+		float y = 1.0f;
+		if (rand == 0) {
+			y = -1.0f;
+		}
+		rand = Random.Range(0,2);
+		float z = 2.0f;
+		if (rand == 0) {
+			z = -2.0f;
+		}
+
+		Vector3 force = new Vector3 (x, y, z);
+		rb.AddForce (150.0f * force);
 
 	}
 	// Update is called once per frame
