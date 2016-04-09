@@ -32,4 +32,20 @@ public class Test : NetworkBehaviour {
     {
         myColor = c;
     }
+
+    public void destroyFloatingHand()
+    {
+        Transform l = transform.FindChild("CenterEyeAnchor").FindChild("LeapSpace")
+                .FindChild("LeapHandController").FindChild("CapsuleHand_L");
+        foreach (Transform child in l)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        Transform r = transform.FindChild("CenterEyeAnchor").FindChild("LeapSpace")
+            .FindChild("LeapHandController").FindChild("CapsuleHand_R");
+        foreach (Transform child in r)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+    }
 }
