@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using Leap;
 
 public class Bat : MonoBehaviour {
-
-    public GameObject player;
+    
     public GameObject batPrefab;
 
     Controller controller;
@@ -51,21 +50,19 @@ public class Bat : MonoBehaviour {
         Vector3 reference = new Vector3(hand.PalmPosition.x, hand.PalmPosition.y, hand.PalmPosition.z);
         reference.x /= 1000;
         reference.y /= 1000;
-        reference.z /= -1000;
-        reference.y -= 0.3f;
-        reference.z += 0.3f;
-        reference = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0) * reference;
-        Vector3 handAngle = new Vector3(20 * hand.PalmNormal.x, 20 * hand.PalmNormal.y, 20 * hand.PalmNormal.z);
+        reference.z /= 1000;
+        //reference = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * reference;
+        Vector3 handAngle = new Vector3(hand.PalmNormal.x, hand.PalmNormal.y, hand.PalmNormal.z);
         handAngle.x /= 1000;
         handAngle.y /= 1000;
         handAngle.z /= 1000;
-        handAngle = Quaternion.Euler(0, player.transform.rotation.eulerAngles.y, 0) * handAngle;
-        Vector3 swordPosition = handAngle + reference;
+        //handAngle = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * handAngle;
+        Vector3 swordPosition = reference;
 
         Vector3 palmNormal = new Vector3(hand.PalmNormal.x, hand.PalmNormal.y, hand.PalmNormal.z);
-        palmNormal.z *= -1;
+        //palmNormal.z *= -1;
         Vector3 palmDirection = new Vector3(hand.Direction.x, hand.Direction.y, hand.Direction.z);
-        palmDirection.z *= -1;
+        //palmDirection.z *= -1;
         Vector3 batDirection = Vector3.Cross(palmNormal, palmDirection);
 
         if (isLeft)
