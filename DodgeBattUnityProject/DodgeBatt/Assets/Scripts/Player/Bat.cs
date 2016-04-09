@@ -48,6 +48,7 @@ public class Bat : MonoBehaviour {
     private void CheckAndUpdateBat(Hand hand, bool isLeft)
     {
         Vector3 reference = new Vector3(hand.PalmPosition.x, hand.PalmPosition.y, hand.PalmPosition.z);
+        Debug.Log(hand.PalmPosition);
         reference.x /= 1000;
         reference.y /= 1000;
         reference.z /= 1000;
