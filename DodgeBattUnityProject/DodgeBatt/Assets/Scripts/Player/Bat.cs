@@ -41,9 +41,18 @@ public class Bat : MonoBehaviour {
         {
             CheckAndUpdateBat(leftHand, true);
         }
+        else if (batLeft != null)  // && leftHand == null
+        {
+            Destroy(batLeft);
+        }
+
         if (rightHand != null)
         {
             CheckAndUpdateBat(rightHand, false);
+        }
+        else if (batRight != null)  // && rightHand == null
+        {
+            Destroy(batRight);
         }
     }
 
@@ -54,15 +63,18 @@ public class Bat : MonoBehaviour {
         reference.x /= -1000;
         reference.y /= 1000;
         reference.z /= -1000;
+        reference.x += 0.234f;
+        reference.y += 0.04f;
+        reference.z += 0.32f;
         reference = new Vector3(reference.x, reference.z, reference.y);
-        //reference = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * reference;
+        reference = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * reference;
         reference = reference + gameObject.transform.position;
         Vector3 handAngle = normalScalar * hand.PalmNormal.ToVector3();
         handAngle.x /= 1000;
         handAngle.y /= 1000;
         handAngle.z /= 1000;
         handAngle = new Vector3(handAngle.x, handAngle.z, handAngle.y);
-        //handAngle = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * handAngle;
+        handAngle = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * handAngle;
         Vector3 swordPosition = reference + handAngle;
 
         Vector3 palmNormal = new Vector3(hand.PalmNormal.x, hand.PalmNormal.y, hand.PalmNormal.z);
@@ -73,7 +85,7 @@ public class Bat : MonoBehaviour {
 
         if (isLeft)
         {
-            if (hand.IsLeft && hand.GrabStrength > .1)
+            if (hand.IsLeft && hand.GrabStrength > 0.2f)
             {
 
                 if (batLeft == null)
