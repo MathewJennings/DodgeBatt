@@ -15,14 +15,16 @@ public class NetworkManagerScript : NetworkManager {
         if (numPlayers == 0)
         {
             player1 = player;
-            player.GetComponent<Test>().setColor(Color.blue);
-            destroyFloatingHand(player);
+            Test script = player.GetComponent<Test>();
+            script.setColor(Color.blue);
+            script.destroyFloatingHand();
         }
         else
         {
             player2 = player;
-            player.GetComponent<Test>().setColor(orange);
-            destroyFloatingHand(player);
+            Test script = player.GetComponent<Test>();
+            script.setColor(orange);
+            script.destroyFloatingHand();
         }
         NetworkServer.AddPlayerForConnection(conn, player, playerControllerId);
 
