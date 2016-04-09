@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Leap;
+using Leap.Unity;
 
 public class Bat : MonoBehaviour {
     
     public GameObject batPrefab;
+    public float normalScalar = 1.0f;
 
     Controller controller;
     GameObject batLeft;
@@ -47,18 +49,21 @@ public class Bat : MonoBehaviour {
 
     private void CheckAndUpdateBat(Hand hand, bool isLeft)
     {
-        Vector3 reference = new Vector3(hand.PalmPosition.x, hand.PalmPosition.y, hand.PalmPosition.z);
-        Debug.Log(hand.PalmPosition);
-        reference.x /= 1000;
+        Debug.Log(gameObject.transform.position);
+        Vector3 reference = hand.PalmPosition.ToVector3();
+        reference.x /= -1000;
         reference.y /= 1000;
-        reference.z /= 1000;
+        reference.z /= -1000;
+        reference = new Vector3(reference.x, reference.z, reference.y);
         //reference = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * reference;
-        Vector3 handAngle = new Vector3(hand.PalmNormal.x, hand.PalmNormal.y, hand.PalmNormal.z);
+        reference = reference + gameObject.transform.position;
+        Vector3 handAngle = normalScalar * hand.PalmNormal.ToVector3();
         handAngle.x /= 1000;
         handAngle.y /= 1000;
         handAngle.z /= 1000;
+        handAngle = new Vector3(handAngle.x, handAngle.z, handAngle.y);
         //handAngle = Quaternion.Euler(0, gameObject.transform.rotation.eulerAngles.y, 0) * handAngle;
-        Vector3 swordPosition = reference;
+        Vector3 swordPosition = reference + handAngle;
 
         Vector3 palmNormal = new Vector3(hand.PalmNormal.x, hand.PalmNormal.y, hand.PalmNormal.z);
         //palmNormal.z *= -1;
