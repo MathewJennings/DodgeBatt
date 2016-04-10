@@ -17,11 +17,14 @@ public class Bat : NetworkBehaviour {
 
     Transform leftPalm, rightPalm;
 
+    bool playerIsBlue; // Color of the player holding this bat.
+
     // Use this for initialization
-	void Start () {
+    void Start () {
         controller = new Controller();
         batLeft = null;
         batRight = null;
+        playerIsBlue = gameObject.GetComponent<Test>().getColor().Equals(Color.blue);
 	}
 	
 	// Update is called once per frame
@@ -93,6 +96,7 @@ public class Bat : NetworkBehaviour {
                 {
                     batLeft = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
                     batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
+                    setBatColor(batLeft);
                 }
                 else if (leftBatExists())
                 {
@@ -115,6 +119,7 @@ public class Bat : NetworkBehaviour {
                 {
                     batRight = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
                     batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+                    setBatColor(batRight);
                 }
                 else if (rightBatExists())
                 {
@@ -147,5 +152,17 @@ public class Bat : NetworkBehaviour {
     public bool rightBatExists()
     {
         return batRight != null;
+    }
+
+    private void setBatColor(GameObject bat)
+    {
+        if (playerIsBlue)
+        {
+            bat.GetComponent<SetColor>().turnBlue();
+        }
+        else
+        {
+            bat.GetComponent<SetColor>().turnOrange();
+        }
     }
 }

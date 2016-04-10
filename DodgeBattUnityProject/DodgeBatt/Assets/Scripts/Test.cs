@@ -33,6 +33,11 @@ public class Test : NetworkBehaviour {
         myColor = c;
     }
 
+    public Color getColor()
+    {
+        return myColor;
+    }
+
     [ClientRpc]
     public void RpcDestroyFloatingHand()
     {
