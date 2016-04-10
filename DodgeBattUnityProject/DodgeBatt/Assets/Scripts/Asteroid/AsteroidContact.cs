@@ -41,6 +41,7 @@ public class AsteroidContact : MonoBehaviour {
             Destroy(gameObject);
 
             // Spawn new ones.
+    
             GameObject halfstroid1 = Instantiate(halfstroid, transform.position + new Vector3(0.02f, 0.02f, 0.02f), transform.rotation) as GameObject;
             GameObject halfstroid2 = Instantiate(halfstroid, transform.position + new Vector3(-0.02f, -0.02f, -0.02f), transform.rotation*Quaternion.Euler(180f,0f,0f)) as GameObject;
             halfstroid1.GetComponent<Rigidbody>().AddExplosionForce(15f, transform.position, 2f);
