@@ -14,7 +14,6 @@ public class Test : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        transform.FindChild("Capsule").gameObject.GetComponent<Renderer>().material.color = myColor;
 
         if (!isLocalPlayer)
         {
