@@ -55,6 +55,6 @@ public class GameManagerScript : MonoBehaviour {
         GameObject psystem = Instantiate(partSystem, newBall.transform.position, Quaternion.identity) as GameObject;
         newBallBehavior.initForce = initForce;
         newBallBehavior.psystem = psystem.GetComponent<ParticleSystem>();
-        newBall.GetComponent<Rigidbody>().AddForce(initForce * (p1pos.transform.position + new Vector3(0f, 0.25f, 0f) - ballSpawnPaws));
+		newBall.GetComponent<Rigidbody>().AddForce(initForce * (p1pos.transform.position + new Vector3(0f, 0.25f, 0f) - ballSpawnPaws).normalized);
     }
 }
