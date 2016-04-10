@@ -97,7 +97,7 @@ public class Bat : NetworkBehaviour {
                     batLeft = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
                     batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
                     setBatColor(batLeft);
-                    NetworkServer.SpawnWithClientAuthority(batLeft, gameObject);
+                    NetworkServer.SpawnWithClientAuthority(batLeft, connectionToClient);
                 }
                 else if (leftBatExists())
                 {
@@ -121,7 +121,7 @@ public class Bat : NetworkBehaviour {
                     batRight = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
                     batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
                     setBatColor(batRight);
-                    NetworkServer.SpawnWithClientAuthority(batRight, gameObject);
+                    NetworkServer.SpawnWithClientAuthority(batRight, connectionToClient);
                 }
                 else if (rightBatExists())
                 {
