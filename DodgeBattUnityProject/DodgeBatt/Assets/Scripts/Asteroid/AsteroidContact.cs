@@ -5,6 +5,7 @@ public class AsteroidContact : MonoBehaviour {
 
     public GameObject hundredPointsUI;
     public GameObject player;
+    public GameObject halfstroid;
 
     Destroy destroyer;
 
@@ -33,12 +34,20 @@ public class AsteroidContact : MonoBehaviour {
             GameObject pointsUI = Instantiate(hundredPointsUI, scorePos, Quaternion.identity) as GameObject;
             pointsUI.transform.LookAt(eyes.transform);
             pointsUI.transform.Rotate(new Vector3(0f, 180f, 0f));
-
-            Invoke("Destroy(gameObject.GetComponent<SphereBehaviour>().psystem)",0.5f);
-
-            destroyer.DestroyGameObjectAfterDelay(0.5f);
-
             player.GetComponent<PlayerScore>().incrementScore(100);
+
+            // Destroy current prefabs
+            Destroy(gameObject.GetComponent<SphereBehaviour>().psystem);
+            Destroy(gameObject);
+
+            // Spawn new ones.
+            GameObject halfstroid1 = Instantiate(halfstroid, transform.position + new Vector3(0.02f, 0.02f, 0.02f), transform.rotation) as GameObject;
+            GameObject halfstroid2 = Instantiate(halfstroid, transform.position + new Vector3(-0.02f, -0.02f, -0.02f), transform.rotation*Quaternion.Euler(180f,0f,0f)) as GameObject;
+            halfstroid1.GetComponent<Rigidbody>().AddExplosionForce(15f, transform.position, 2f);
+            halfstroid2.GetComponent<Rigidbody>().AddExplosionForce(-15f, transform.position, 2f);
+            Destroy(halfstroid1, 5f);
+            Destroy(halfstroid2, 5f);
+
 
         }
 
