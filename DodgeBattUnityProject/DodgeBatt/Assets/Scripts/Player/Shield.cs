@@ -17,8 +17,11 @@ public class Shield : NetworkBehaviour {
 
     Transform leftPalm, rightPalm;
 
+    bool playerIsBlue; // Color of the player holding this bat.
+
     void Start () {
         controller = new Controller();
+        playerIsBlue = gameObject.GetComponent<Test>().getColor().Equals(Color.blue);
     }
 	
 	void Update () {
@@ -89,6 +92,8 @@ public class Shield : NetworkBehaviour {
                 {
                     // Make the left shield.
                     leftShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
+                    setShieldColor(leftShield);
+                    NetworkServer.Spawn(leftShield);
                 }
                 else if (leftShieldExists())
                 {
@@ -103,6 +108,8 @@ public class Shield : NetworkBehaviour {
                 {
                     // Make the right shield.
                     rightShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
+                    setShieldColor(rightShield);
+                    NetworkServer.Spawn(rightShield);
                 }
                 else if (rightShieldExists())
                 {
@@ -151,5 +158,17 @@ public class Shield : NetworkBehaviour {
     public bool rightShieldExists()
     {
         return rightShield != null;
+    }
+
+    private void setShieldColor(GameObject shield)
+    {
+        if (playerIsBlue)
+        {
+            shield.GetComponent<SetColor>().turnBlue();
+        }
+        else
+        {
+            shield.GetComponent<SetColor>().turnOrange();
+        }
     }
 }
