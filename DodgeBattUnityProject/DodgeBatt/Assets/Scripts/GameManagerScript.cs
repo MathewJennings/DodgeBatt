@@ -32,7 +32,7 @@ public class GameManagerScript : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		if (player == null) {
-			player = GameObject.FindGameObjectWithTag ("player");
+			player = GameObject.FindGameObjectWithTag ("Player");
 		}
 		spawnWait += Time.deltaTime;
 		powerUpWait += Time.deltaTime;
@@ -40,7 +40,7 @@ public class GameManagerScript : MonoBehaviour {
 			spawnWait = 0.0f;
             SpawnBall1Player();
         }
-		if (player.GetComponent<Test> ().GetHP () <= 0) {
+		if (player != null && player.GetComponent<Test> ().GetHP () <= 0) {
 			//Enable Game Over sequence!!
 		}
 	}

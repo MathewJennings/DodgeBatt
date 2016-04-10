@@ -34,9 +34,12 @@ public class AsteroidContact : MonoBehaviour {
             pointsUI.transform.LookAt(eyes.transform);
             pointsUI.transform.Rotate(new Vector3(0f, 180f, 0f));
 
+            Invoke("Destroy(gameObject.GetComponent<SphereBehaviour>().psystem)",0.5f);
+
             destroyer.DestroyGameObjectAfterDelay(0.5f);
 
             player.GetComponent<PlayerScore>().incrementScore(100);
+
         }
 
     }
