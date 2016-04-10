@@ -4,7 +4,10 @@ using System;
 
 
 public class DodgeBallBehaviour : SphereBehaviour {
-	
+
+	AudioSource fxSound;
+	public AudioClip backMusic; 
+
 	public override void Update () {
 		base.Update ();
 	}
@@ -15,7 +18,10 @@ public class DodgeBallBehaviour : SphereBehaviour {
 		if (obj.tag == "Player") {
 			//Do Something....
 			obj.GetComponent<Test>().DecerementHP(5);
+			return;
 		}
+		fxSound = GetComponent<AudioSource> ();
+		fxSound.Play ();
 	}
 }
 
