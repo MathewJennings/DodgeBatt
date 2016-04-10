@@ -7,6 +7,8 @@ public class Test : NetworkBehaviour {
     [SyncVar]
     private Color myColor;
 
+	private int hp;
+
 	// Use this for initialization
 	void Start () {
         CmdDestroyFloatingHand();
@@ -14,6 +16,7 @@ public class Test : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
         if (!isLocalPlayer)
         {
             transform.FindChild("CenterEyeAnchor").gameObject.GetComponent<Camera>().gameObject.SetActive(false);
@@ -58,6 +61,17 @@ public class Test : NetworkBehaviour {
             }
         }
     }
+
+	public void DecerementHP(int amt) {
+		hp -= amt;
+		if (hp < 0) {
+			hp = 0;
+		}
+	}
+
+	public int getHP () {
+		return hp;
+	}
 
     [Command]
     public void CmdDestroyFloatingHand()

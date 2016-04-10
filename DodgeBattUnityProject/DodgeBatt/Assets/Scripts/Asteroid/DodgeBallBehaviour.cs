@@ -12,9 +12,9 @@ public class DodgeBallBehaviour : SphereBehaviour {
 	public override void OnCollisionEnter(Collision collision) {
 		base.OnCollisionEnter (collision);
 		GameObject obj = collision.gameObject;
-		if (obj.tag == "bat") {
+		if (obj.tag == "Player") {
 			//Do Something....
-			Vector3 vel = obj.GetComponent<Rigidbody>().velocity;
+			obj.GetComponent<Test>().DecerementHP(5);
 		}
 	}
 }
