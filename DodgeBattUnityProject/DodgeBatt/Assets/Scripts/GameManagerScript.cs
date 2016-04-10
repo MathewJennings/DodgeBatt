@@ -15,7 +15,11 @@ public class GameManagerScript : MonoBehaviour {
 
 	private float spawnTime = 15.0f;
 
-	private float currWait = 0.0f;
+	private float spawnWait = 0.0f;
+
+	private float powerUpSpawnTime = 45.0f;
+
+	private float powerUpWait = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -25,20 +29,21 @@ public class GameManagerScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-		currWait += Time.deltaTime;
-		if (currWait >= spawnTime) {
-			currWait = 0.0f;
+		spawnWait += Time.deltaTime;
+		powerUpWait += Time.deltaTime;
+		if (spawnWait >= spawnTime) {
+			spawnWait = 0.0f;
             //SpawnBall();
             SpawnBall1Player();
         }
 	}
 		
 	private void SpawnBall () {
-		Object newBall = Instantiate (ball, new Vector3 (0, 0, 0), Quaternion.identity);
-		DodgeBallBehaviour newBallBehavior = ((Transform)newBall).gameObject.GetComponent<DodgeBallBehaviour>();
-		Object psystem = Instantiate (partSystem, new Vector3 (0, 0, 0), Quaternion.identity);
+		GameObject newBall = Instantiate (ball, new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
+		DodgeBallBehaviour newBallBehavior = newBall.GetComponent<DodgeBallBehaviour>();
+		GameObject psystem = Instantiate (partSystem, new Vector3 (0, 0, 0), Quaternion.identity) as GameObject;
         newBallBehavior.initForce = initForce;
-        newBallBehavior.psystem = ((Transform) psystem).gameObject.GetComponent<ParticleSystem>();
+        newBallBehavior.psystem = psystem.GetComponent<ParticleSystem>();
 	}
 
     private void SpawnBall1Player()
