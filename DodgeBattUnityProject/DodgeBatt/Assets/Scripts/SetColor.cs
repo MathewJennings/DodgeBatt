@@ -8,7 +8,7 @@ public class SetColor : NetworkBehaviour {
     public Material blueMat;
     public GameObject model;
 
-    [SyncVar]
+    //[SyncVar]
     private Material mat;
 
     // Use this for initialization

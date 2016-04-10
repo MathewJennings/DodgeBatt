@@ -59,7 +59,7 @@ public class Bat : NetworkBehaviour {
         }
         else if (batLeft != null)  // && leftHand == null
         {
-            Destroy(batLeft);
+            CmdDestroyBat(true);
         }
 
         if (rightHand != null)
@@ -68,7 +68,7 @@ public class Bat : NetworkBehaviour {
         }
         else if (batRight != null)  // && rightHand == null
         {
-            Destroy(batRight);
+            CmdDestroyBat(false);
         }
     }
 
