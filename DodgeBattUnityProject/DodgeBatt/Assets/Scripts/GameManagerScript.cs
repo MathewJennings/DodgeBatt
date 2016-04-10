@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 using System.Collections;
 
 public class GameManagerScript : MonoBehaviour {
@@ -13,6 +14,7 @@ public class GameManagerScript : MonoBehaviour {
 
     public GameObject p1pos;
 
+	private GameObject player = null;
 	private float spawnTime = 5.0f;
 
 	private float spawnWait = 0.0f;
@@ -29,12 +31,18 @@ public class GameManagerScript : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
+		if (player == null) {
+			player = GameObject.FindGameObjectWithTag ("player");
+		}
 		spawnWait += Time.deltaTime;
 		powerUpWait += Time.deltaTime;
 		if (spawnWait >= spawnTime) {
 			spawnWait = 0.0f;
             SpawnBall1Player();
         }
+		if (player.GetComponent<Test> ().GetHP () <= 0) {
+			//Enable Game Over sequence!!
+		}
 	}
 
     private void SpawnBall1Player()
