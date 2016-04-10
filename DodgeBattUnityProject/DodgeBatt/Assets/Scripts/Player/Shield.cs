@@ -93,7 +93,7 @@ public class Shield : NetworkBehaviour {
                     // Make the left shield.
                     leftShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
                     setShieldColor(leftShield);
-                    NetworkServer.Spawn(leftShield);
+                    NetworkServer.SpawnWithClientAuthority(leftShield, gameObject);
                 }
                 else if (leftShieldExists())
                 {
@@ -109,7 +109,7 @@ public class Shield : NetworkBehaviour {
                     // Make the right shield.
                     rightShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
                     setShieldColor(rightShield);
-                    NetworkServer.Spawn(rightShield);
+                    NetworkServer.SpawnWithClientAuthority(rightShield, gameObject);
                 }
                 else if (rightShieldExists())
                 {
