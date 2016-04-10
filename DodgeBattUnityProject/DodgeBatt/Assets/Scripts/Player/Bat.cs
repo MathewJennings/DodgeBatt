@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections.Generic;
 using Leap;
 using Leap.Unity;
 
-public class Bat : MonoBehaviour {
+public class Bat : NetworkBehaviour {
     
     public GameObject batPrefab;
     public float normalScalar = 1.0f;
@@ -25,6 +26,8 @@ public class Bat : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!isLocalPlayer) return;
+
         Frame frame = controller.Frame();
         List<Hand> hands = frame.Hands;
         Hand leftHand = null;

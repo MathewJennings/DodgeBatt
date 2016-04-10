@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 using System.Collections.Generic;
 using Leap;
 using Leap.Unity;
 
-public class Shield : MonoBehaviour {
+public class Shield : NetworkBehaviour {
 
     public GameObject shieldPrefab;
     public float normalScalar = 0.4f;
@@ -21,6 +22,8 @@ public class Shield : MonoBehaviour {
     }
 	
 	void Update () {
+        if (!isLocalPlayer) return;
+
         Frame frame = controller.Frame();
         List<Hand> hands = frame.Hands;
         Hand leftHand = null;
