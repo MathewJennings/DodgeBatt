@@ -212,7 +212,6 @@ public class Bat : NetworkBehaviour {
 
     private void setBatColor(GameObject bat)
     {
-        return;
         if (playerIsBlue)
         {
             bat.GetComponent<SetColor>().turnBlue();
