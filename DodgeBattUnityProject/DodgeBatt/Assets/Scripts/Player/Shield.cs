@@ -162,11 +162,11 @@ public class Shield : NetworkBehaviour {
     [Command]
     void CmdDestroyShield(bool isLeftShield)
     {
-        if (isLeftShield)
+        if (isLeftShield && leftShield != null)
         {
             Destroy(leftShield);
         }
-        else
+        else if (rightShield != null)
         {
             Destroy(rightShield);
         }

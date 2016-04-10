@@ -173,11 +173,11 @@ public class Bat : NetworkBehaviour {
     void CmdDestroyBat(bool isLeftBat)
     {
         Debug.Log("DESTROY BAT");
-        if (isLeftBat)
+        if (isLeftBat && batLeft != null)
         {
             Destroy(batLeft);
         }
-        else
+        else if (batRight != null)
         {
             Destroy(batRight);
         }
