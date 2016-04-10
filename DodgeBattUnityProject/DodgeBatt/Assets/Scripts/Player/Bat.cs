@@ -94,10 +94,11 @@ public class Bat : NetworkBehaviour {
                 batDirection = new Vector3(pd.x, pd.y, -pd.z);
                 if (batLeft == null && !shield.leftShieldExists())
                 {
-                    batLeft = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
-                    batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
-                    setBatColor(batLeft);
-                    CmdSpawnBatOnServer(batLeft);
+                    //batLeft = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
+                    //batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
+                    //setBatColor(batLeft);
+                    //NetworkServer.Spawn(bat);
+                    CmdFire();
                 }
                 else if (leftBatExists())
                 {
@@ -118,10 +119,11 @@ public class Bat : NetworkBehaviour {
                 batDirection = new Vector3(-pd.x, -pd.y, pd.z);
                 if (batRight == null && !shield.rightShieldExists())
                 {
-                    batRight = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
-                    batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
-                    setBatColor(batRight);
-                    CmdSpawnBatOnServer(batRight);
+                    //batRight = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
+                    //batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+                    //setBatColor(batRight);
+                    //CmdSpawnBatOnServer(batRight);
+                    CmdFire();
                 }
                 else if (rightBatExists())
                 {
@@ -137,10 +139,21 @@ public class Bat : NetworkBehaviour {
     }
 
 
+
     [Command]
-    void CmdSpawnBatOnServer(GameObject bat)
+    void CmdFire()
     {
-        NetworkServer.SpawnWithClientAuthority(bat, connectionToClient);
+        // This [Command] code is run on the server!
+
+        // create the bullet object locally
+        GameObject bat = (GameObject)Instantiate(batPrefab, transform.position - transform.forward, Quaternion.identity);
+        bat.GetComponent<Rigidbody>().velocity = -transform.forward * 4;
+
+        // spawn the bullet on the clients
+        NetworkServer.Spawn(bat);
+
+        // when the bullet is destroyed on the server it will automaticaly be destroyed on clients
+        Destroy(bat, 2.0f);
     }
 
     private Vector3 toVector3Scaled(Vector v, float scale)
