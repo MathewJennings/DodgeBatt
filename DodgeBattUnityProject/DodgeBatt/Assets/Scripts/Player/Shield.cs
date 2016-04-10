@@ -204,6 +204,7 @@ public class Shield : NetworkBehaviour {
 
     private void setShieldColor(GameObject shield)
     {
+        return;
         if (playerIsBlue)
         {
             shield.GetComponent<SetColor>().turnBlue();
