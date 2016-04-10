@@ -147,12 +147,12 @@ public class Shield : NetworkBehaviour {
     [Command]
     void CmdUpdateShield(Vector3 shieldPosition, Quaternion shieldRotation, Vector palmNormal, bool isLeftShield)
     {
-        if (isLeftShield)
+        if (isLeftShield && leftShield != null)
         {
             leftShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(palmNormal, 0.1f));
             leftShield.GetComponent<Transform>().rotation = shieldRotation;
         }
-        else
+        else if (leftShield != null)
         {
             rightShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(palmNormal, 0.1f));
             rightShield.GetComponent<Transform>().rotation = shieldRotation;

@@ -157,12 +157,12 @@ public class Bat : NetworkBehaviour {
     [Command]
     void CmdUpdateBat(Vector3 batPosition, Vector3 batDirection, bool isLeftBat)
     {
-        if (isLeftBat)
+        if (isLeftBat && batLeft != null)
         {
             batLeft.GetComponent<Transform>().position = batPosition;
             batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
         }
-        else
+        else if (batRight != null)
         {
             batRight.GetComponent<Transform>().position = batPosition;
             batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
