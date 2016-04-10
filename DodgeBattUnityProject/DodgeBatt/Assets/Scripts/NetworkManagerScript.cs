@@ -6,7 +6,7 @@ public class NetworkManagerScript : NetworkManager {
 
     GameObject player1;
     GameObject player2;
-    Color orange = new Color(232, 118, 0);
+    Color orange = new Color(240, 1, 0);
     int numPlayers = 0;
 
     public override void OnServerAddPlayer(NetworkConnection conn, short playerControllerId)
