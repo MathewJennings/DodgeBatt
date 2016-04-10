@@ -17,9 +17,11 @@ public class GameManagerScript : MonoBehaviour {
 
 	private float spawnWait = 0.0f;
 
-	private float powerUpSpawnTime = 45.0f;
+	private float timeElapsed = 0.0f;
 
-	private float powerUpWait = 0.0f;
+//	private float powerUpSpawnTime = 45.0f;
+
+//	private float powerUpWait = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -30,11 +32,13 @@ public class GameManagerScript : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		spawnWait += Time.deltaTime;
-		powerUpWait += Time.deltaTime;
+		timeElapsed += Time.deltaTime;
+//		powerUpWait += Time.deltaTime;
 		if (spawnWait >= spawnTime) {
 			spawnWait = 0.0f;
             SpawnBall1Player();
         }
+
 	}
 
     private void SpawnBall1Player()
