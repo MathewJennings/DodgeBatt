@@ -7,7 +7,7 @@ public class Test : NetworkBehaviour {
     [SyncVar]
     private Color myColor;
 
-	private int hp;
+	private int hp = 100;
 
 	// Use this for initialization
 	void Start () {
@@ -69,7 +69,7 @@ public class Test : NetworkBehaviour {
 		}
 	}
 
-	public int getHP () {
+	public int GetHP () {
 		return hp;
 	}
 
