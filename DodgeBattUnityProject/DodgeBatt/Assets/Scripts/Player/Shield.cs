@@ -12,7 +12,11 @@ public class Shield : NetworkBehaviour {
 
     Controller controller;
     public GameObject controller_;
+
+    [SyncVar]
     GameObject leftShield;
+
+    [SyncVar]
     GameObject rightShield;
 
     Transform leftPalm, rightPalm;
@@ -90,49 +94,82 @@ public class Shield : NetworkBehaviour {
             {
                 if (leftShield == null && !bat.leftBatExists())
                 {
-                    // Make the left shield.
-                    leftShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
-                    setShieldColor(leftShield);
-                    CmdSpawnShieldOnServer(leftShield);
+                    CmdSpawnShield(shieldPosition, shieldRotation, true);
                 }
                 else if (leftShieldExists())
                 {
                     // Maintain the left shield.
-                    leftShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(hand.PalmNormal, 0.1f));
-                    leftShield.GetComponent<Transform>().rotation = shieldRotation;
+                    CmdUpdateShield(shieldPosition, shieldRotation, hand.PalmNormal, true);
                 }
             }
             else
             {
                 if (rightShield == null && !bat.rightBatExists())
                 {
-                    // Make the right shield.
-                    rightShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
-                    setShieldColor(rightShield);
-                    CmdSpawnShieldOnServer(rightShield);
+                    CmdSpawnShield(shieldPosition, shieldRotation, false);
                 }
                 else if (rightShieldExists())
                 {
                     // Maintain the right shield.
-                    rightShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(hand.PalmNormal, 0.1f));
-                    rightShield.GetComponent<Transform>().rotation = shieldRotation;
+                    CmdUpdateShield(shieldPosition, shieldRotation, hand.PalmNormal, false);
                 }
             }
         } 
         else if (isLeftHand && leftShield != null)
         {
-            Destroy(leftShield);
+            CmdDestroyShield(true);
         }
         else if (!isLeftHand && rightShield != null)
         {
-            Destroy(rightShield);
+            CmdDestroyShield(false);
         }
     }
 
     [Command]
-    void CmdSpawnShieldOnServer(GameObject shield)
+    void CmdSpawnShield(Vector3 shieldPosition, Quaternion shieldRotation, bool isLeftShield)
     {
-        NetworkServer.SpawnWithClientAuthority(shield, connectionToClient);
+        // This [Command] code is run on the server!
+        // create the shield object locally on the server
+        GameObject shield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
+        setShieldColor(shield);
+        // spawn the shield on the clients
+        NetworkServer.Spawn(shield);
+        if (isLeftShield)
+        {
+            leftShield = shield;
+        }
+        else
+        {
+            rightShield = shield;
+        }
+    }
+
+    [Command]
+    void CmdUpdateShield(Vector3 shieldPosition, Quaternion shieldRotation, Vector palmNormal, bool isLeftShield)
+    {
+        if (isLeftShield)
+        {
+            leftShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(palmNormal, 0.1f));
+            leftShield.GetComponent<Transform>().rotation = shieldRotation;
+        }
+        else
+        {
+            rightShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(palmNormal, 0.1f));
+            rightShield.GetComponent<Transform>().rotation = shieldRotation;
+        }
+    }
+
+    [Command]
+    void CmdDestroyShield(bool isLeftShield)
+    {
+        if (isLeftShield)
+        {
+            Destroy(leftShield);
+        }
+        else
+        {
+            Destroy(rightShield);
+        }
     }
 
 
