@@ -51,6 +51,6 @@ public class GameManagerScript : MonoBehaviour {
         newBallBehavior.initForce = initForce;
         newBallBehavior.psystem = psystem.GetComponent<ParticleSystem>();
         Debug.Log("force: " + initForce * (p1pos.transform.position - ballSpawnPaws));
-        newBall.GetComponent<Rigidbody>().AddForce(initForce * (p1pos.transform.position - ballSpawnPaws));
+        newBall.GetComponent<Rigidbody>().AddForce(initForce * (p1pos.transform.position + new Vector3(0f, 0.25f, 0f) - ballSpawnPaws));
     }
 }
