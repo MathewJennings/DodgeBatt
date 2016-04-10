@@ -62,6 +62,8 @@ public class SphereBehaviour : MonoBehaviour {
 	}
 
 	public void FixedUpdate () {
+		Vector3 toOrigin = (-1.0f * transform.position).normalized;
+		rb.AddForce (2 * toOrigin);
 		if (rb.velocity.magnitude > maxSpeed) {
 			rb.velocity = maxSpeed * rb.velocity.normalized;
 		}
