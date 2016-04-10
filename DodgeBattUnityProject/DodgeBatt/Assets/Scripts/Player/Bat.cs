@@ -135,6 +135,7 @@ public class Bat : NetworkBehaviour {
     [Command]
     void CmdSpawnBat(Vector3 batPosition, Vector3 batDirection, bool isLeftBat)
     {
+        Debug.Log("SPAWN BAT");
         // This [Command] code is run on the server!
         // create the bat object locally on the server
         GameObject bat = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
@@ -171,6 +172,7 @@ public class Bat : NetworkBehaviour {
     [Command]
     void CmdDestroyBat(bool isLeftBat)
     {
+        Debug.Log("DESTROY BAT");
         if (isLeftBat)
         {
             Destroy(batLeft);
