@@ -17,11 +17,9 @@ public class GameManagerScript : MonoBehaviour {
 
 	private float spawnWait = 0.0f;
 
-	private float timeElapsed = 0.0f;
+	private float powerUpSpawnTime = 45.0f;
 
-//	private float powerUpSpawnTime = 45.0f;
-
-//	private float powerUpWait = 0.0f;
+	private float powerUpWait = 0.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -32,24 +30,22 @@ public class GameManagerScript : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 		spawnWait += Time.deltaTime;
-		timeElapsed += Time.deltaTime;
-//		powerUpWait += Time.deltaTime;
+		powerUpWait += Time.deltaTime;
 		if (spawnWait >= spawnTime) {
 			spawnWait = 0.0f;
             SpawnBall1Player();
         }
-
 	}
 
     private void SpawnBall1Player()
     {
         // Pick a random spot on the far side of the battle room to spawn a new ball
-        Vector3 ballSpawnPos = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(-2.5f, 2.5f), Random.Range(-2.5f, 2.5f));
-        GameObject newBall = Instantiate(asteroid, ballSpawnPos, Quaternion.identity) as GameObject;
-        DodgeBallBehaviour newBallBehavior = newBall.GetComponent<DodgeBallBehaviour>();
-        GameObject psystem = Instantiate(partSystem, newBall.transform.position, Quaternion.identity) as GameObject;
+        Vector3 spawnPos = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(-2.5f, 2.5f), Random.Range(-2.5f, 2.5f));
+        GameObject newAsteroid = Instantiate(asteroid, spawnPos, Quaternion.identity) as GameObject;
+        DodgeBallBehaviour newBallBehavior = newAsteroid.GetComponent<DodgeBallBehaviour>();
+        GameObject psystem = Instantiate(partSystem, newAsteroid.transform.position, Quaternion.identity) as GameObject;
         newBallBehavior.initForce = initForce;
         newBallBehavior.psystem = psystem.GetComponent<ParticleSystem>();
-		newBall.GetComponent<Rigidbody>().AddForce(initForce * (p1pos.transform.position + new Vector3(0f, 0.25f, 0f) - ballSpawnPos).normalized);
+        newAsteroid.GetComponent<Rigidbody>().AddForce(initForce * (p1pos.transform.position + new Vector3(0f, 0.25f, 0f) - spawnPos).normalized);
     }
 }
