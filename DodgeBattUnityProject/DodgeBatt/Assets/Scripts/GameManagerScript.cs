@@ -5,7 +5,7 @@ public class GameManagerScript : MonoBehaviour {
 
 	/* Note: The GameManager As is will not work over the network! */
 
-	public GameObject ball;
+	public GameObject asteroid;
 
 	public float initForce;
 
@@ -45,7 +45,7 @@ public class GameManagerScript : MonoBehaviour {
     {
         // Pick a random spot on the far side of the battle room to spawn a new ball
         Vector3 ballSpawnPos = new Vector3(Random.Range(-2.5f, 2.5f), Random.Range(-2.5f, 2.5f), Random.Range(-2.5f, 2.5f));
-        GameObject newBall = Instantiate(ball, ballSpawnPos, Quaternion.identity) as GameObject;
+        GameObject newBall = Instantiate(asteroid, ballSpawnPos, Quaternion.identity) as GameObject;
         DodgeBallBehaviour newBallBehavior = newBall.GetComponent<DodgeBallBehaviour>();
         GameObject psystem = Instantiate(partSystem, newBall.transform.position, Quaternion.identity) as GameObject;
         newBallBehavior.initForce = initForce;
