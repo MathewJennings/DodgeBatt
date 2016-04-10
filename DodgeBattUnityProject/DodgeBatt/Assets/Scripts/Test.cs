@@ -14,7 +14,6 @@ public class Test : NetworkBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         if (!isLocalPlayer)
         {
             transform.FindChild("CenterEyeAnchor").gameObject.GetComponent<Camera>().gameObject.SetActive(false);

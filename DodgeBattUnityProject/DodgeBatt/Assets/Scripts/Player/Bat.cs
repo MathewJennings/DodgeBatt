@@ -9,6 +9,7 @@ public class Bat : NetworkBehaviour {
     public GameObject batPrefab;
     public float normalScalar = 1.0f;
     public GameObject controller_;
+    public GameObject cam;
     public Shield shield;
 
     Controller controller;
@@ -88,14 +89,12 @@ public class Bat : NetworkBehaviour {
         Vector3 pd = hand.Direction.ToVector3();
         pd = swappedYZVector(pd);
         //Vector3 batDirection = Vector3.Cross(pd, pn);
-        Vector3 batDirection = new Vector3(pd.x, pd.y, pd.z);
+        Vector3 batDirection = new Vector3(-pd.x, -pd.y, pd.z);
 
         if (isLeft)
         {
             if (hand.GrabStrength > 0.4f)
             {
-
-                batDirection = new Vector3(-pd.x, -pd.y, pd.z);
                 if (batLeft == null && !shield.leftShieldExists())
                 {
                     CmdSpawnBat(batPosition, batDirection, true);
@@ -114,8 +113,6 @@ public class Bat : NetworkBehaviour {
         {
             if (hand.GrabStrength > 0.4f)
             {
-
-                batDirection = new Vector3(-pd.x, -pd.y, pd.z);
                 if (batRight == null && !shield.rightShieldExists())
                 {
                     CmdSpawnBat(batPosition, batDirection, false);
@@ -147,7 +144,8 @@ public class Bat : NetworkBehaviour {
         // This [Command] code is run on the server!
         // create the bat object locally on the server
         GameObject bat = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
-        bat.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+        bat.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection) * Quaternion.Euler(0, 0, 180);
+        bat.transform.Rotate(0, cam.transform.rotation.eulerAngles.y, 0, Space.World);
         setBatColor(bat);
         // spawn the bat on the clients
         NetworkServer.SpawnWithClientAuthority(bat, connectionToClient);
@@ -168,11 +166,13 @@ public class Bat : NetworkBehaviour {
         {
             batLeft.GetComponent<Transform>().position = batPosition;
             batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+            batLeft.transform.Rotate(0, cam.transform.rotation.eulerAngles.y, 0, Space.World);
         }
         else if (batRight != null)
         {
             batRight.GetComponent<Transform>().position = batPosition;
             batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+            batRight.transform.Rotate(0, cam.transform.rotation.eulerAngles.y, 0, Space.World);
         }
     }
 
