@@ -6,7 +6,6 @@ using System;
 public class DodgeBallBehaviour : SphereBehaviour {
 
 	AudioSource fxSound;
-	public AudioClip backMusic; 
 
 	public override void Update () {
 		base.Update ();
