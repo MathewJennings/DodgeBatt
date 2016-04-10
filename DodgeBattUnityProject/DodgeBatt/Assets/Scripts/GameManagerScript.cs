@@ -5,9 +5,7 @@ public class GameManagerScript : MonoBehaviour {
 
 	/* Note: The GameManager As is will not work over the network! */
 
-	public Transform asteroid;
-
-	public Transform comet;
+	public Transform ball;
 
 	public float initForce;
 
@@ -17,11 +15,9 @@ public class GameManagerScript : MonoBehaviour {
 
 	private float currWait = 0.0f;
 
-	private bool asteroNext = false;
-
 	// Use this for initialization
 	void Start () {
-		SpawnAstOrComet (asteroid);
+        SpawnBall();
 	}
 	
 	// Update is called once per frame
@@ -29,21 +25,15 @@ public class GameManagerScript : MonoBehaviour {
 		currWait += Time.deltaTime;
 		if (currWait >= spawnTime) {
 			currWait = 0.0f;
-			if (asteroNext) {
-				SpawnAstOrComet (asteroid);
-				asteroNext = false;
-			} else {
-				SpawnAstOrComet (comet);
-				asteroNext = true;
-			}
-		}
+            SpawnBall();
+        }
 	}
 		
-	private void SpawnAstOrComet (Transform astOrComet) {
-		Object newAst = Instantiate (astOrComet, new Vector3 (0, 0, 0), Quaternion.identity);
-		DodgeBallBehaviour newAstBehavior = ((Transform) newAst).gameObject.GetComponent<DodgeBallBehaviour>();
+	private void SpawnBall () {
+		Object newBall = Instantiate (ball, new Vector3 (0, 0, 0), Quaternion.identity);
+		DodgeBallBehaviour newBallBehavior = ((Transform)newBall).gameObject.GetComponent<DodgeBallBehaviour>();
 		Object psystem = Instantiate (partSystem, new Vector3 (0, 0, 0), Quaternion.identity);
-		newAstBehavior.initForce = initForce;
-		newAstBehavior.psystem = ((Transform) psystem).gameObject.GetComponent<ParticleSystem>();
+        newBallBehavior.initForce = initForce;
+        newBallBehavior.psystem = ((Transform) psystem).gameObject.GetComponent<ParticleSystem>();
 	}
 }
