@@ -40,13 +40,19 @@ public class Test : NetworkBehaviour {
                  .FindChild("LeapHandController").FindChild("CapsuleHand_L");
         foreach (Transform child in l)
         {
-            GameObject.Destroy(child.gameObject);
+            if (!child.gameObject.tag.Equals("Palm_Tracker"))
+            {
+                GameObject.Destroy(child.gameObject);
+            }
         }
         Transform r = transform.FindChild("CenterEyeAnchor").FindChild("LeapSpace")
             .FindChild("LeapHandController").FindChild("CapsuleHand_R");
         foreach (Transform child in r)
         {
-            GameObject.Destroy(child.gameObject);
+            if (!child.gameObject.tag.Equals("Palm_Tracker"))
+            {
+                GameObject.Destroy(child.gameObject);
+            }
         }
     }
 

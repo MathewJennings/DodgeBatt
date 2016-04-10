@@ -7,18 +7,17 @@ public class Shield : MonoBehaviour {
 
     public GameObject shieldPrefab;
     public float normalScalar = 0.4f;
+    public Bat bat;
 
     Controller controller;
-    GameObject centerEyeAnchor;
-    public GameObject leapControllerGameObj;
+    public GameObject controller_;
     GameObject leftShield;
     GameObject rightShield;
 
+    Transform leftPalm, rightPalm;
+
     void Start () {
         controller = new Controller();
-        leapControllerGameObj = GameObject.Find("LeapHandController");
-        centerEyeAnchor = GameObject.Find("CenterEyeAnchor");
-
     }
 	
 	void Update () {
@@ -32,10 +31,12 @@ public class Shield : MonoBehaviour {
             if (h.IsLeft)
             {
                 leftHand = h;
+                leftPalm = controller_.transform.FindChild("RigidRoundHand_L").FindChild("palm");
             }
             else
             {
                 rightHand = h;
+                rightPalm = controller_.transform.FindChild("RigidRoundHand_R").FindChild("palm");
             }
         }
 
@@ -65,48 +66,46 @@ public class Shield : MonoBehaviour {
         // making the gesture.
         if (Mathf.Abs(hand.PalmNormal.y) > 0.9 && hand.Direction.z < -0.9)
         {
-            // Get the rotation of the hand.
-            Vector3 palmNormal = toVector3(hand.PalmNormal);
-            Vector3 palmDirection = toVector3(hand.Direction);
-            Vector3 shieldRotation = Vector3.Cross(palmNormal, palmDirection);
 
-            Debug.Log("leapControllerPos" + leapControllerGameObj.transform.position);
-            Vector3 targetPosition = leapControllerGameObj.transform.position + toVector3(hand.PalmPosition) / 1000 + toVector3(hand.PalmNormal) * normalScalar;
-            targetPosition = Quaternion.Euler(0, centerEyeAnchor.transform.rotation.eulerAngles.y, 0) * targetPosition;
-            
-            Debug.Log("palm: " + hand.PalmNormal);
+            Vector3 shieldPosition;
+            Quaternion shieldRotation;
             if (isLeftHand)
             {
-                if (leftShield == null)
+                shieldPosition = leftPalm.position;
+                shieldRotation = leftPalm.rotation;
+            }
+            else
+            {
+                shieldPosition = rightPalm.position;
+                shieldRotation = rightPalm.rotation;
+            }
+
+            if (isLeftHand)
+            {
+                if (leftShield == null && !bat.leftBatExists())
                 {
                     // Make the left shield.
-                    leftShield = (GameObject)Instantiate(shieldPrefab, targetPosition, Quaternion.identity);
-                    leftShield.transform.rotation = Quaternion.FromToRotation(Vector3.down, shieldRotation);
-                    leftShield.transform.rotation = Quaternion.Euler(0, 90, 0) * leftShield.transform.rotation;
+                    leftShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
                 }
-                else
+                else if (leftShieldExists())
                 {
                     // Maintain the left shield.
-                    leftShield.GetComponent<Transform>().position = targetPosition;
-                    leftShield.transform.rotation = Quaternion.FromToRotation(Vector3.down, shieldRotation);
-                    leftShield.transform.rotation = Quaternion.Euler(0, 90, 0) * leftShield.transform.rotation;
+                    leftShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(hand.PalmNormal, 0.1f));
+                    leftShield.GetComponent<Transform>().rotation = shieldRotation;
                 }
             }
             else
             {
-                if (rightShield == null)
+                if (rightShield == null && !bat.rightBatExists())
                 {
                     // Make the right shield.
-                    rightShield = (GameObject)Instantiate(shieldPrefab, targetPosition, Quaternion.identity);
-                    rightShield.transform.rotation = Quaternion.FromToRotation(Vector3.down, shieldRotation);
-                    rightShield.transform.rotation = Quaternion.Euler(90, 0, 0) * rightShield.transform.rotation;
+                    rightShield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
                 }
-                else
+                else if (rightShieldExists())
                 {
                     // Maintain the right shield.
-                    rightShield.GetComponent<Transform>().position = targetPosition;
-                    rightShield.transform.rotation = Quaternion.FromToRotation(Vector3.down, shieldRotation);
-                    rightShield.transform.rotation = Quaternion.Euler(90, 0, 0) * rightShield.transform.rotation;
+                    rightShield.GetComponent<Transform>().position = shieldPosition + swappedYZVector(toVector3Scaled(hand.PalmNormal, 0.1f));
+                    rightShield.GetComponent<Transform>().rotation = shieldRotation;
                 }
             }
         } 
@@ -136,4 +135,18 @@ public class Shield : MonoBehaviour {
         return new Vector3(v.x * scale, v.y * scale, v.z * scale);
     }
 
+    private Vector3 swappedYZVector(Vector3 v)
+    {
+        return new Vector3(v.x, v.z, v.y);
+    }
+
+    public bool leftShieldExists()
+    {
+        return leftShield != null;
+    }
+
+    public bool rightShieldExists()
+    {
+        return rightShield != null;
+    }
 }
