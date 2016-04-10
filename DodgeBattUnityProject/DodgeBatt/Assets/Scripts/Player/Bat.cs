@@ -12,7 +12,11 @@ public class Bat : NetworkBehaviour {
     public Shield shield;
 
     Controller controller;
+
+    [SyncVar]
     GameObject batLeft;
+
+    [SyncVar]
     GameObject batRight;
 
     Transform leftPalm, rightPalm;
@@ -91,24 +95,19 @@ public class Bat : NetworkBehaviour {
             if (hand.GrabStrength > 0.4f)
             {
 
-                batDirection = new Vector3(pd.x, pd.y, -pd.z);
+                batDirection = new Vector3(-pd.x, -pd.y, pd.z);
                 if (batLeft == null && !shield.leftShieldExists())
                 {
-                    //batLeft = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
-                    //batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
-                    //setBatColor(batLeft);
-                    //NetworkServer.Spawn(bat);
-                    CmdFire();
+                    CmdSpawnBat(batPosition, batDirection, true);
                 }
                 else if (leftBatExists())
                 {
-                    batLeft.GetComponent<Transform>().position = batPosition;
-                    batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.down, batDirection);
+                    CmdUpdateBat(batPosition, batDirection, true);
                 }
             }
             else if (batLeft != null)
             {
-                Destroy(batLeft);
+                CmdDestroyBat(true);
             }
         }
         else
@@ -119,41 +118,67 @@ public class Bat : NetworkBehaviour {
                 batDirection = new Vector3(-pd.x, -pd.y, pd.z);
                 if (batRight == null && !shield.rightShieldExists())
                 {
-                    //batRight = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
-                    //batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
-                    //setBatColor(batRight);
-                    //CmdSpawnBatOnServer(batRight);
-                    CmdFire();
+                    CmdSpawnBat(batPosition, batDirection, false);
                 }
                 else if (rightBatExists())
                 {
-                    batRight.GetComponent<Transform>().position = batPosition;
-                    batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+                    CmdUpdateBat(batPosition, batDirection, false);
                 }
             }
             else if (batRight != null)
             {
-                Destroy(batRight);
+                CmdDestroyBat(false);
             }
         }
     }
 
-
-
     [Command]
-    void CmdFire()
+    void CmdSpawnBat(Vector3 batPosition, Vector3 batDirection, bool isLeftBat)
     {
         // This [Command] code is run on the server!
-
-        // create the bullet object locally
-        GameObject bat = (GameObject)Instantiate(batPrefab, transform.position - transform.forward, Quaternion.identity);
-        bat.GetComponent<Rigidbody>().velocity = -transform.forward * 4;
-
-        // spawn the bullet on the clients
+        // create the bat object locally on the server
+        GameObject bat = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
+        Debug.Log("Bat: " + bat);
+        bat.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+        setBatColor(bat);
+        // spawn the bat on the clients
         NetworkServer.Spawn(bat);
+        if (isLeftBat)
+        {
+            batLeft = bat;
+        }
+        else
+        {
+            batRight = bat;
+        }
+    }
 
-        // when the bullet is destroyed on the server it will automaticaly be destroyed on clients
-        Destroy(bat, 2.0f);
+    [Command]
+    void CmdUpdateBat(Vector3 batPosition, Vector3 batDirection, bool isLeftBat)
+    {
+        if (isLeftBat)
+        {
+            batLeft.GetComponent<Transform>().position = batPosition;
+            batLeft.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+        }
+        else
+        {
+            batRight.GetComponent<Transform>().position = batPosition;
+            batRight.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
+        }
+    }
+
+    [Command]
+    void CmdDestroyBat(bool isLeftBat)
+    {
+        if (isLeftBat)
+        {
+            Destroy(batLeft);
+        }
+        else
+        {
+            Destroy(batRight);
+        }
     }
 
     private Vector3 toVector3Scaled(Vector v, float scale)

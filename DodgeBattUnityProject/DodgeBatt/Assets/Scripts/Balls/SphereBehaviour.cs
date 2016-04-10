@@ -45,8 +45,9 @@ public class SphereBehaviour : MonoBehaviour {
 			z = -2.0f;
 		}
 
-		Vector3 force = new Vector3 (x, y, z);
-		rb.AddForce (150.0f * force);
+        Vector3 force = new Vector3(x, y, z);
+
+        //rb.AddForce (150.0f * force);
 
 	}
 	// Update is called once per frame
