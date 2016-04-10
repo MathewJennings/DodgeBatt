@@ -135,6 +135,14 @@ public class Bat : NetworkBehaviour {
     [Command]
     void CmdSpawnBat(Vector3 batPosition, Vector3 batDirection, bool isLeftBat)
     {
+        if (isLeftBat && batLeft != null)
+        {
+            return;
+        }
+        if (!isLeftBat && batRight != null)
+        {
+            return;
+        }
         Debug.Log("SPAWN BAT");
         // This [Command] code is run on the server!
         // create the bat object locally on the server

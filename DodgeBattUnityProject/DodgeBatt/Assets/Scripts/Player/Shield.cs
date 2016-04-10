@@ -128,6 +128,14 @@ public class Shield : NetworkBehaviour {
     [Command]
     void CmdSpawnShield(Vector3 shieldPosition, Quaternion shieldRotation, bool isLeftShield)
     {
+        if (isLeftShield && leftShield != null)
+        {
+            return;
+        }
+        if (!isLeftShield && rightShield != null)
+        {
+            return;
+        }
         // This [Command] code is run on the server!
         // create the shield object locally on the server
         GameObject shield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
