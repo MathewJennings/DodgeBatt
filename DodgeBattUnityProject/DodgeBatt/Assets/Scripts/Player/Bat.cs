@@ -139,11 +139,10 @@ public class Bat : NetworkBehaviour {
         // This [Command] code is run on the server!
         // create the bat object locally on the server
         GameObject bat = (GameObject)Instantiate(batPrefab, batPosition, Quaternion.identity);
-        Debug.Log("Bat: " + bat);
         bat.transform.rotation = Quaternion.FromToRotation(Vector3.up, batDirection);
         setBatColor(bat);
         // spawn the bat on the clients
-        NetworkServer.Spawn(bat);
+        NetworkServer.SpawnWithClientAuthority(bat, connectionToClient);
         if (isLeftBat)
         {
             batLeft = bat;

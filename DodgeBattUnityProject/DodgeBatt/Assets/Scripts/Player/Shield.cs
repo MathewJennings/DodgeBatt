@@ -133,7 +133,7 @@ public class Shield : NetworkBehaviour {
         GameObject shield = (GameObject)Instantiate(shieldPrefab, shieldPosition, shieldRotation);
         setShieldColor(shield);
         // spawn the shield on the clients
-        NetworkServer.Spawn(shield);
+        NetworkServer.SpawnWithClientAuthority(shield, connectionToClient);
         if (isLeftShield)
         {
             leftShield = shield;
