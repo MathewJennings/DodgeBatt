@@ -56,7 +56,7 @@ public class Shield : NetworkBehaviour {
         }
         else if (leftShield != null)  // && leftHand == null
         {
-            Destroy(leftShield);
+            CmdDestroyShield(true);
         }
 
         if (rightHand != null)
@@ -65,7 +65,7 @@ public class Shield : NetworkBehaviour {
         }
         else if (rightShield != null) // && rightHand == null
         {
-            Destroy(rightShield);
+            CmdDestroyShield(true);
         }
     }
 
