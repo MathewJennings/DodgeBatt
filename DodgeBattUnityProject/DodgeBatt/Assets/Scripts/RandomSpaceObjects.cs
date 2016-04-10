@@ -16,7 +16,7 @@ public class RandomSpaceObjects : MonoBehaviour {
             float y = 70 * Mathf.Sin(s) * Mathf.Sin(t);
             float z = 70 * Mathf.Cos(t);
 
-            Instantiate(spiralPrefab, new Vector3(x, y, z), Quaternion.identity);
+            Instantiate(spiralPrefab, new Vector3(x, y, z), Random.rotation);
         }
 	}
 	
