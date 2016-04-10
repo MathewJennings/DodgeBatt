@@ -19,6 +19,8 @@ public class SphereBehaviour : MonoBehaviour {
 
 	public float initForce;
 
+	public float maxSpeed;
+
 	private float delay = 0.0f;
 
 	private bool isOn;
@@ -56,6 +58,12 @@ public class SphereBehaviour : MonoBehaviour {
 		if (isOn && delay >= 0.5f) {
 			isOn = false;
 			psystem.Stop ();
+		}
+	}
+
+	public void FixedUpdate () {
+		if (rb.velocity.magnitude > maxSpeed) {
+			rb.velocity = maxSpeed * rb.velocity.normalized;
 		}
 	}
 
